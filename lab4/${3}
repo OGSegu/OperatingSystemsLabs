@@ -1,0 +1,5 @@
+./5.sh:grep --exclude=${3} -R '${1}' $2 &> /tmp/grep;mv /tmp/grep '${3}'
+./${3}:/mnt/sdb6/labs/linux/lab4/../lab4/o1.o:/mnt/sdb6/labs/linux/lab4/../lab4/5.sh:grep --exclude=${3} -R '${1}' $2 &> "${3}"
+./${3}:/mnt/sdb6/labs/linux/lab4/../lab4/5.sh:grep --exclude=${3} -R '${1}' $2 &> /tmp/grep;mv /tmp/grep '${3}'
+./${3}:/mnt/sdb6/labs/linux/lab4/../lab4/o2.o:/mnt/sdb6/labs/linux/lab4/../lab4/o1.o:/mnt/sdb6/labs/linux/lab4/../lab4/5.sh:grep --exclude=${3} -R '${1}' $2 &> "${3}"
+./${3}:/mnt/sdb6/labs/linux/lab4/../lab4/o2.o:/mnt/sdb6/labs/linux/lab4/../lab4/5.sh:grep --exclude=${3} -R '${1}' $2 &> "${3}"
