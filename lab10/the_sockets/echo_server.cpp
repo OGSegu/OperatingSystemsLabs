@@ -58,11 +58,13 @@ int main(void)
 				done = 1;
 			}
 
-			if (!done) 
-				if (send(s2, str, n, 0) < 0) {
-					perror("send");
-					done = 1;
-				}
+			if (!done) {
+                printf("message: %s", str);
+                if (send(s2, str, n, 0) < 0) {
+                    perror("send");
+                    done = 1;
+                }
+            }
 		} while (!done);
 
 		close(s2);
