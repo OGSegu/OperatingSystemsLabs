@@ -14,27 +14,28 @@ int main(void) {
         perror(PUBLIC);
         exit(1);
     }
-    /* Сообщениеможнопрочитатьиз public конвейера */
+    /* Сообщение можно прочитать из public конвейера */
     while (read(publicfifo, (char *) &msg, sizeof(msg)) > 0) {
         int pid;
         if ((pid = fork() == 0)) {
-            n = done = 0; /* Очисткасчетчиков | флагов */
+            printf("pid: %i", getpid());
+            n = done = 0; /* Очистка счетчиков | флагов */
             do {/* Попыткаоткрытия private FIFO */
                 if ((privatefifo = open(msg.fifo_name, O_WRONLY | O_NDELAY)) == -1)
-                    sleep(3);/* Задержкаповремени  */
-                else {/* Открытиеуспешно */
-                    fin = popen(msg.cmd_line, "r");/* Исполнение shell cmd, полученнойотклиента */
-                    write(privatefifo, "\n", 1); /* Подготовкаочередноговывода */
+                    sleep(3);/* Задержка по времени  */
+                else {/* Открытие успешно */
+                    fin = popen(msg.cmd_line, "r");/* Исполнение shell cmd, полученной отклиента */
+                    write(privatefifo, "\n", 1); /* Подготовка очередного вывода */
                     while ((n = read(fileno(fin), buffer, PIPE_BUF)) > 0) {
                         write(privatefifo, buffer, n);/* Выводв private FIFO кклиенту */
-                        memset(buffer, 0x0, PIPE_BUF);/* Очисткабуфера */
+                        memset(buffer, 0x0, PIPE_BUF);/* Очистка буфера */
                     }
                     pclose(fin);
                     close(privatefifo);
-                    done = 1;/* Записьпроизведенауспешно */
+                    done = 1;/* Запись произведена успешно */
                 }
             } while (++n < 5 && !done);
-            if (!done) {/* Указаниенанеудачныйисход */
+            if (!done) {/* Указание на неудачный исход */
                 write(fileno(stderr), "\nNOTE: SERVER ** NEVER ** accessed private FIFO\n", 48);
                 exit(1);
             }
