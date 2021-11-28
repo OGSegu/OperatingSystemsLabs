@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -17,6 +16,7 @@ struct my_msgbuf {
 
 int main(void)
 {
+    long message_type = 1;
 	struct my_msgbuf buf;
 	int msqid;
 	key_t key;
@@ -33,9 +33,13 @@ int main(void)
 	
 	printf("Enter lines of text, ^D to quit:\n");
 
-	buf.mtype = 1; /* we don't really care in this case */
-
 	while(fgets(buf.mtext, sizeof buf.mtext, stdin) != NULL) {
+        buf.mtype = message_type;
+        if (message_type == 1) {
+            message_type = 2;
+        } else {
+            message_type = 1;
+        }
 		int len = strlen(buf.mtext);
 
 		/* ditch newline at end, if it exists */

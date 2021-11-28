@@ -37,7 +37,12 @@ int main(void)
 			perror("msgrcv");
 			exit(1);
 		}
-		printf("spock: \"%s\"\n", buf.mtext);
+        if (buf.mtype == 1) {
+            printf("message with type 1: \"%s\"\n", buf.mtext);
+        } else {
+            printf("message with type 2: \"%s\"\n", buf.mtext);
+
+        }
 	}
 
 	return 0;
